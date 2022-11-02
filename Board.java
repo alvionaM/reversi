@@ -40,10 +40,6 @@ public class Board {
         }
     }
 
-    Board(int teapot){
-        System.out.println("Tipota :)");
-    }
-
     private void produceChildren() {
         children = new ArrayList<>();
 
