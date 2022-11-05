@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class Board {
 
-    private static final int BLACK = 1;
-    private static final int WHITE = -1;
+    public static final int BLACK = 1;
+    public static final int WHITE = -1;
     private static final int EMPTY = 0;
 
     private static final int ROWS = 8;
@@ -11,8 +11,10 @@ public class Board {
 
     private int[][] gameBoard;
     private int lastPlayer;
-    private int nextPlayer;
+
     private ArrayList<Board> children;
+    private Move lastMove;
+    private int bestExpectedValue;
 
     Board() {
 
@@ -40,39 +42,35 @@ public class Board {
         }
     }
 
-    private void produceChildren() {
-        children = new ArrayList<>();
+    public void produceChildren() {
+        if(children==null) {
+            children = new ArrayList<>();
 
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                Board child = ifValidMakeMove(i,j, nextPlayer);
-                if (child != null) {
-                    children.add(child);
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    Board child = ifValidMakeMove(i, j, -1*lastPlayer); //the next player
+                    if (child != null) {
+                        child.setLastPlayer(-1*lastPlayer);
+                        children.add(child);
+                    }
                 }
             }
-        }
+        }else
+            return;
     }
 
-    public boolean isTerminal(boolean byProducingChildren) {
-        // current player
-        if (byProducingChildren) {
-            produceChildren();
+    public boolean isTerminal() {
+        produceChildren();
 
-            if (!children.isEmpty()) {
-                return false;
-            }
-        }
-
-        //lastPlayer again
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                if (isValidMove(i,j, lastPlayer))
-                    return false;
-            }
+        if (!children.isEmpty()) {
+            return false;
         }
 
         return true;
     }
+
+
+
 
     public boolean isValidMove(int row, int col, int COLOR) {
 
@@ -333,6 +331,8 @@ public class Board {
         }
 
         if (!childBirth) return null;
+
+        child.gameBoard[row][col] = COLOR;  //played square changes color
         return child;
     }
 
@@ -341,9 +341,54 @@ public class Board {
 
     }
 
-    public void evaluate(){}
+    public int evaluate(){
+        int cornerEval = gameBoard[0][0] + gameBoard[0][7] + gameBoard[7][0] + gameBoard[7][7];
+        int sideEval = 0;
+        int allEval = 0;
 
-    public void print(){}
+        for(int i=0; i<ROWS; i++){
+            for (int j=0; j<COLS; j++){
+                allEval += gameBoard[i][j];
 
-    ArrayList<Board> getChildren() {return children;}
+                if((i==0 || i==7) && (j!=0 && j!=7)){       //sides: row0 and row7
+                    sideEval += gameBoard[i][j];
+                }
+                else if((j==0 || j==7) && (i!=0 && i!=7)){   //sides: col0 and col7
+                    sideEval += gameBoard[i][j];
+                }
+            }
+        }
+        System.out.println("From Evaluate: "+(3*cornerEval + 2*sideEval + allEval));
+        return 3*cornerEval + 2*sideEval + allEval;
+    }
+
+    public void print() {
+        System.out.println("  1 2 3 4 5 6 7 8");
+        for (int i = 0; i < ROWS; i++) {
+            System.out.print((i+1)+" ");
+            for (int j = 0; j < COLS; j++) {
+                char c = gameBoard[i][j]!=0 ? (gameBoard[i][j]==1 ? 'B': 'W') : 'o';
+                System.out.print(c+" ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void setLastPlayer(int lastPlayer){
+        this.lastPlayer = lastPlayer;
+    }
+
+    public int getLastPlayer() {
+        return lastPlayer;
+    }
+
+    public void setBestExpectedValue(int value) {
+        this.bestExpectedValue = value;
+    }
+
+    public int getBestExpectedValue() {
+        return bestExpectedValue;
+    }
+
+    public ArrayList<Board> getChildren() {return children;}
 }
