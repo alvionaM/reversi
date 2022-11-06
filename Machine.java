@@ -5,12 +5,13 @@ public class Machine extends Player{
     Machine(int maxDepth){
         this.maxDepth = maxDepth;
     }
+
+    @Override
     public Board play(Board board){
         return MiniMax(board);
     }
 
-    Board MiniMax(Board board)
-    {
+    Board MiniMax(Board board) {
         if(color == Board.BLACK)
         {
             //If machine plays as black then it wants to maximize the heuristics value
@@ -21,11 +22,13 @@ public class Machine extends Player{
             //If machine plays as white then it wants to minimize the heuristics value
             min(board, 0);
         }
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        //############# Test ###############
         for(Board child: board.getChildren()){
             System.out.println(child.getBestExpectedValue());
             System.out.println();
-        }
+        }//##################################
+
 
         for(Board child: board.getChildren()){
             if(child.getBestExpectedValue() == board.getBestExpectedValue())
@@ -37,8 +40,15 @@ public class Machine extends Player{
     int max(Board board, int depth){
         if(board.isTerminal() || depth == maxDepth)
         {
-            //System.out.println("From max: "+board.evaluate());
-            return board.evaluate();
+            //############# Test ###############
+            System.out.println("k = "+depth+" From max: "+board.evaluate());
+            board.print();
+            System.out.println();
+            //##################################
+
+            int evaluation = board.evaluate();
+            board.setBestExpectedValue(evaluation);
+            return evaluation;
 
         }
         int maxValue = Integer.MIN_VALUE;
@@ -56,7 +66,15 @@ public class Machine extends Player{
     int min(Board board, int depth){
         if(board.isTerminal() || depth == maxDepth)
         {
-            return board.evaluate();
+            //############# Test ###############
+            System.out.println("k = "+depth+" From max: "+board.evaluate());
+            board.print();
+            System.out.println();
+            //##################################
+
+            int evaluation = board.evaluate();
+            board.setBestExpectedValue(evaluation);
+            return evaluation;
         }
         int minValue = Integer.MAX_VALUE;
         for(Board child: board.getChildren()){

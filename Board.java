@@ -25,10 +25,21 @@ public class Board {
                 gameBoard[i][j] = EMPTY;
             }
         }
+//        gameBoard[3][3] = WHITE;
+//        gameBoard[3][4] = BLACK;
+//        gameBoard[4][3] = WHITE;
+//        gameBoard[4][4] = WHITE;
+//        gameBoard[4][5] = WHITE;
+//        gameBoard[5][6] = WHITE;
+
         gameBoard[3][3] = WHITE;
         gameBoard[3][4] = BLACK;
         gameBoard[4][3] = BLACK;
         gameBoard[4][4] = WHITE;
+
+//        gameBoard[2][1] = BLACK;
+//        gameBoard[2][2] = BLACK;
+//        gameBoard[2][3] = BLACK;
     }
 
     Board(Board fatherBoard) {
@@ -41,6 +52,9 @@ public class Board {
             }
         }
     }
+
+
+
 
     public void produceChildren() {
         if(children==null) {
@@ -187,7 +201,6 @@ public class Board {
 
         return false;
     }
-
 
     private Board ifValidMakeMove(int row, int col, int COLOR) {
 
@@ -336,10 +349,12 @@ public class Board {
         return child;
     }
 
-
     private void makeMove(int row, int col){
 
     }
+
+
+
 
     public int evaluate(){
         int cornerEval = gameBoard[0][0] + gameBoard[0][7] + gameBoard[7][0] + gameBoard[7][7];
@@ -358,7 +373,7 @@ public class Board {
                 }
             }
         }
-        System.out.println("From Evaluate: "+(3*cornerEval + 2*sideEval + allEval));
+
         return 3*cornerEval + 2*sideEval + allEval;
     }
 
@@ -373,6 +388,9 @@ public class Board {
             System.out.println();
         }
     }
+
+
+
 
     public void setLastPlayer(int lastPlayer){
         this.lastPlayer = lastPlayer;
@@ -391,4 +409,5 @@ public class Board {
     }
 
     public ArrayList<Board> getChildren() {return children;}
+
 }

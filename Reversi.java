@@ -6,7 +6,7 @@ public class Reversi {
 
     public static void main(String[] args){
 
-        int maxDepth = 2;
+        int maxDepth = 1;
 
         Board board = new Board();
         Human human = new Human();
@@ -47,8 +47,7 @@ public class Reversi {
 
         while(terminate < 2){
 
-            //board.print();
-            //System.out.println();
+            board.print();
 
             currentPlayer.produceMoves(board);
 
@@ -69,7 +68,9 @@ public class Reversi {
 
                 System.out.println();
 
+                //Testing
                 break;
+
             }else{
                 terminate++;
             }
