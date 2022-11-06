@@ -62,10 +62,12 @@ public class Board {
 
             for (int i = 0; i < ROWS; i++) {
                 for (int j = 0; j < COLS; j++) {
-                    Board child = ifValidMakeMove(i, j, -1*lastPlayer); //the next player
-                    if (child != null) {
-                        child.setLastPlayer(-1*lastPlayer);
-                        children.add(child);
+                    if(gameBoard[i][j]==EMPTY) {
+                        Board child = ifValidMakeMove(i, j, -1 * lastPlayer); //the next player
+                        if (child != null) {
+                            child.setLastPlayer(-1 * lastPlayer);
+                            children.add(child);
+                        }
                     }
                 }
             }
@@ -219,6 +221,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[i][col] = COLOR;
@@ -236,6 +239,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[i][col] = COLOR;
@@ -253,6 +257,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row][j] = COLOR;
@@ -270,6 +275,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row][j] = COLOR;
@@ -287,6 +293,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row-i][col-i] = COLOR;
@@ -304,6 +311,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row+i][col+i] = COLOR;
@@ -321,6 +329,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row-i][col+i] = COLOR;
@@ -338,6 +347,7 @@ public class Board {
                 } else {
                     child = temp;
                     childBirth = true;
+                    break;
                 }
             }
             temp.gameBoard[row+i][col-i] = COLOR;

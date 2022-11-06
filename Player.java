@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 public abstract class Player {
     protected int color;
-    protected ArrayList<Board> children;
+    //protected ArrayList<Board> children;
 
-    public boolean canMove()
+    public boolean canMove(Board board)
     {
-        return !children.isEmpty();
+        return !board.getChildren().isEmpty();
     }
 
     public void produceMoves(Board board)
     {
         board.produceChildren();
-        children = board.getChildren();
+        //children = board.getChildren();
     }
 
     public abstract Board play(Board board);

@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class Reversi {
 
-
     public static void main(String[] args){
 
         int maxDepth = 1;
@@ -51,7 +50,7 @@ public class Reversi {
 
             currentPlayer.produceMoves(board);
 
-            if(currentPlayer.canMove()) {
+            if(currentPlayer.canMove(board)) {
                 terminate = 0;
 
                 /*if (board.getLastPlayer() == human.getColor()) {
