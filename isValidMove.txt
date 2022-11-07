@@ -1,0 +1,115 @@
+public boolean isValidMove(int row, int col, int COLOR) {
+
+        //kathetos-panw
+        for (int i = row - 1; i >= 0; i--) {
+            if (gameBoard[i][col] == EMPTY) {
+                break;
+            }
+            if (gameBoard[i][col] == COLOR) {
+                if (i == row - 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //kathetos-katw
+        for (int i = row + 1; i < ROWS; i++) {
+            if (gameBoard[i][col] == EMPTY) {
+                break;
+            }
+            if (gameBoard[i][col] == COLOR) {
+                if (i == row + 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+        //orizontia-aristera
+        for (int j = col - 1; j >= 0; j--) {
+            if (gameBoard[row][j] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row][j] == COLOR) {
+                if (j == col - 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //orizontia-deksia
+        for (int j = col + 1; j < COLS; j++) {
+            if (gameBoard[row][j] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row][j] == COLOR) {
+                if (j == col + 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //panw-aristera
+        for (int i = 1; i <= Math.min(row, col); i++) {
+            if (gameBoard[row-i][col-i] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row-i][col-i] == COLOR) {
+                if (i == 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //katw-deksia
+        for (int i = 1; i <= Math.min(ROWS-1-row, COLS-1-col); i++) {
+            if (gameBoard[row+i][col+i] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row+i][col+i] == COLOR) {
+                if (i == 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //panw-deksia
+        for (int i = 1; i <= Math.min(row, COLS-1-col); i++) {
+            if (gameBoard[row-i][col+i] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row-i][col+i] == COLOR) {
+                if (i == 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        //katw-aristera
+        for (int i = 1; i <= Math.min(ROWS-1-row, col); i++) {
+            if (gameBoard[row+i][col-i] == EMPTY) {
+                break;
+            }
+            if (gameBoard[row+i][col-i] == COLOR) {
+                if (i == 1) {
+                    break;
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }

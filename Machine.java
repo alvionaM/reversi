@@ -38,7 +38,7 @@ public class Machine extends Player{
     }
 
     int max(Board board, int depth){
-        if(board.isTerminal() || depth == maxDepth)
+        if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
             System.out.println("k = "+depth+" From max: "+board.evaluate());
@@ -64,7 +64,7 @@ public class Machine extends Player{
     }
 
     int min(Board board, int depth){
-        if(board.isTerminal() || depth == maxDepth)
+        if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
             System.out.println("k = "+depth+" From max: "+board.evaluate());
