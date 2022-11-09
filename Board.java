@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Set;
 
 public class Board {
 
@@ -8,6 +9,7 @@ public class Board {
 
     private static final int ROWS = 8;
     private static final int COLS = ROWS;
+    private static int winner = EMPTY;
 
     private final int[][] gameBoard;
     private int lastPlayer;
@@ -259,7 +261,7 @@ public class Board {
         setLastPlayer(-1*lastPlayer);
     }
 
-    public void print() {
+    /*public void print() {
         System.out.println("\t1\t2\t3\t4\t5\t6\t7\t8");
         for (int i = 0; i < ROWS; i++) {
             System.out.print((i+1)+" ");
@@ -269,9 +271,51 @@ public class Board {
             }
             System.out.println();
         }
+    }*/
+
+    public String boardToString(Set<Move> availMoves){
+        StringBuilder str = new StringBuilder("\t\t+    1   2   3   4    5   6   7    8\n");
+
+        String c;
+
+        for (int i = 0; i < ROWS; i++) {
+            str.append("\t\t").append(i + 1).append(" ");
+
+            for (int j = 0; j < COLS; j++) {
+                if(gameBoard[i][j]!=0)
+                    c = gameBoard[i][j] == 1 ? "\u26ab" : "\u26aa";
+                else{
+                    if (availMoves != null && availMoves.contains(new Move(i,j)))
+                        c = "X";
+                    else
+                        c = "\u2b55";
+                }
+                str.append(c).append("  ");
+            }
+            str.append("\n");
+        }
+        return new String(str);
     }
 
+    public int calcScore(){
+        int scoreBlack = 0;
+        int scoreWhite = 0;
+        for(int i=0; i<ROWS; i++)
+            for(int j=0; j<COLS; j++) {
+                scoreBlack += (gameBoard[i][j] ==  1) ? 1 : 0;
+                scoreWhite += (gameBoard[i][j] == -1) ? 1 : 0;
+            }
+        if(scoreBlack > scoreWhite) {
+            winner = BLACK;
+            return scoreWhite;
 
+        }else if(scoreBlack < scoreWhite) {
+            winner = WHITE;
+            return scoreBlack;
+
+        }else   //tie
+            return 32;
+    }
 
 
     public void setLastPlayer(int lastPlayer){
@@ -292,7 +336,8 @@ public class Board {
 
     public ArrayList<Board> getChildren() {return children;}
 
-
-
+    public int getWinner(){
+        return winner;
+    }
 
 }

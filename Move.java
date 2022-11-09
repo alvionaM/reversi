@@ -1,4 +1,4 @@
-public class Move{
+public class Move {
     private int row;
     private int col;
 
@@ -16,8 +16,13 @@ public class Move{
         this.col = col;
     }
 
-    public int getRow() {return row;}
-    public int getCol() {return col;}
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
 
     @Override
     public boolean equals(Object check) {
@@ -35,7 +40,13 @@ public class Move{
         return (row == m.row && col == m.col);
     }
 
-    public int hashCode(){
-        return row+col;
+    @Override
+    public int hashCode() {
+        return row + col;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + (row + 1) + ", " + (col + 1) + ")";
     }
 }

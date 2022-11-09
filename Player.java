@@ -1,5 +1,11 @@
 public abstract class Player {
-    protected int color;
+    private int color;
+    private String name;
+
+    public Player() {
+        this.name = "Unknown";
+    }
+
 
     public boolean canMove(Board board)
     {
@@ -11,6 +17,8 @@ public abstract class Player {
         board.produceChildren();
     }
 
+    public abstract void printBoard(Board board);
+
     public abstract Board play(Board board);
 
     public int getColor(){
@@ -19,5 +27,13 @@ public abstract class Player {
 
     public void setColor(int color){
         this.color = color;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String toString(){
+        return name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
     }
 }

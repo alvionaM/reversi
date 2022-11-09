@@ -3,10 +3,14 @@ import java.util.Random;
 
 public class Machine extends Player{
 
-    protected int maxDepth;
+    private int maxDepth;
 
     Machine(int maxDepth){
         this.maxDepth = maxDepth;
+    }
+
+    public void printBoard(Board board){
+        System.out.println(board.boardToString(null));
     }
 
     @Override
@@ -15,7 +19,7 @@ public class Machine extends Player{
     }
 
     Board MiniMax(Board board) {
-        if(color == Board.BLACK)
+        if(this.getColor() == Board.BLACK)
         {
             //If machine plays as black it wants to maximize the heuristics value
             max(board, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
