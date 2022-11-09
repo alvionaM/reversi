@@ -9,47 +9,37 @@ public class Board {
     private static final int ROWS = 8;
     private static final int COLS = ROWS;
 
-    private int[][] gameBoard;
+    private final int[][] gameBoard;
     private int lastPlayer;
 
     private ArrayList<Board> children;
-    private Move lastMove;
+    public Move lastMove;
     private int bestExpectedValue;
 
     Board() {
 
         gameBoard = new int[ROWS][COLS];
+        lastMove = new Move();
         lastPlayer = EMPTY;
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 gameBoard[i][j] = EMPTY;
             }
         }
-//        gameBoard[3][3] = WHITE;
-//        gameBoard[3][4] = BLACK;
-//        gameBoard[4][3] = WHITE;
-//        gameBoard[4][4] = WHITE;
-//        gameBoard[4][5] = WHITE;
-//        gameBoard[5][6] = WHITE;
 
         gameBoard[3][3] = WHITE;
         gameBoard[3][4] = BLACK;
         gameBoard[4][3] = BLACK;
         gameBoard[4][4] = WHITE;
-
-//        gameBoard[2][1] = BLACK;
-//        gameBoard[2][2] = BLACK;
-//        gameBoard[2][3] = BLACK;
     }
 
     Board(Board fatherBoard) {
 
         lastPlayer = fatherBoard.lastPlayer;
+        lastMove = new Move(fatherBoard.lastMove.getRow(), fatherBoard.lastMove.getCol());
         gameBoard = new int[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                gameBoard[i][j] = fatherBoard.gameBoard[i][j];
-            }
+            System.arraycopy(fatherBoard.gameBoard[i], 0, gameBoard[i], 0, COLS);
         }
     }
 
@@ -66,6 +56,7 @@ public class Board {
                         Board child = ifValidMakeMove(i, j, -1 * lastPlayer); //the next player
                         if (child != null) {
                             child.setLastPlayer(-1 * lastPlayer);
+                            child.lastMove.makeMove(i, j);
                             children.add(child);
                         }
                     }
@@ -78,11 +69,7 @@ public class Board {
     public boolean isTerminal() {
         produceChildren();
 
-        if (!children.isEmpty()) {
-            return false;
-        }
-
-        return true;
+        return children.isEmpty();
     }
     
 
@@ -241,12 +228,6 @@ public class Board {
         return child;
     }
 
-    private void makeMove(int row, int col){
-
-    }
-
-
-
 
     public int evaluate(){
         int cornerEval = gameBoard[0][0] + gameBoard[0][7] + gameBoard[7][0] + gameBoard[7][7];
@@ -269,13 +250,22 @@ public class Board {
         return 3*cornerEval + 2*sideEval + allEval;
     }
 
+    public void reset() {
+        if (children != null) {
+            children.clear();
+            children = null;
+        }
+
+        setLastPlayer(-1*lastPlayer);
+    }
+
     public void print() {
-        System.out.println("  1 2 3 4 5 6 7 8");
+        System.out.println("\t1\t2\t3\t4\t5\t6\t7\t8");
         for (int i = 0; i < ROWS; i++) {
             System.out.print((i+1)+" ");
             for (int j = 0; j < COLS; j++) {
-                char c = gameBoard[i][j]!=0 ? (gameBoard[i][j]==1 ? 'B': 'W') : 'o';
-                System.out.print(c+" ");
+                String c = gameBoard[i][j]!=0 ? (gameBoard[i][j]==1 ? "\u26ab": "\u26aa") : " \u26d2";
+                System.out.print(c+"  ");
             }
             System.out.println();
         }
@@ -301,5 +291,8 @@ public class Board {
     }
 
     public ArrayList<Board> getChildren() {return children;}
+
+
+
 
 }

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Machine extends Player{
 
     protected int maxDepth;
@@ -14,12 +17,12 @@ public class Machine extends Player{
     Board MiniMax(Board board) {
         if(color == Board.BLACK)
         {
-            //If machine plays as black then it wants to maximize the heuristics value
+            //If machine plays as black it wants to maximize the heuristics value
             max(board, 0);
         }
         else
         {
-            //If machine plays as white then it wants to minimize the heuristics value
+            //If machine plays as white it wants to minimize the heuristics value
             min(board, 0);
         }
 
@@ -29,21 +32,33 @@ public class Machine extends Player{
             System.out.println();
         }//##################################
 
-
-        for(Board child: board.getChildren()){
-            if(child.getBestExpectedValue() == board.getBestExpectedValue())
-                return new Board(child); //?????????????????????????????
+        Random r = new Random();
+        Board keptChild = new Board();
+        ArrayList<Board> children = board.getChildren();
+        int i;
+        for(i = 0; i < children.size(); i++){
+            int val = children.get(i).getBestExpectedValue();
+            if(val == board.getBestExpectedValue()) {
+                keptChild = children.get(i);
+                break;
+            }
         }
-        return null; //??????????????????????????????
+        for (; i < children.size(); i++) {
+            int val = children.get(i).getBestExpectedValue();
+            if(val == board.getBestExpectedValue() && r.nextInt(2) == 1) {
+                keptChild = children.get(i);
+            }
+        }
+        return new Board(keptChild);
     }
 
     int max(Board board, int depth){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
-            System.out.println("k = "+depth+" From max: "+board.evaluate());
-            board.print();
-            System.out.println();
+            //System.out.println("k = "+depth+" From max: "+board.evaluate());
+            //board.print();
+            //System.out.println();
             //##################################
 
             int evaluation = board.evaluate();
@@ -67,9 +82,9 @@ public class Machine extends Player{
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
-            System.out.println("k = "+depth+" From max: "+board.evaluate());
-            board.print();
-            System.out.println();
+            //System.out.println("k = "+depth+" From min: "+board.evaluate());
+            //board.print();
+            //System.out.println();
             //##################################
 
             int evaluation = board.evaluate();

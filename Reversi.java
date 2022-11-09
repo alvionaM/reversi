@@ -1,24 +1,18 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Reversi {
 
+    private static final Player human = new Human();
+    private static final Player machine = new Machine(5);
+    private static Player currentPlayer;
+
+
     public static void main(String[] args){
 
-        int maxDepth = 1;
-
         Board board = new Board();
-        Human human = new Human();
-        Machine machine = new Machine(maxDepth);
-
-        Player[] players = new Player[2];
-        players[0] = human;
-        players[1] = machine;
-        Player currentPlayer;
 
         Scanner input = new Scanner(System.in);
         String option;
-
 
         do {
             System.out.print("Choose \n\t1. To play first \n\t2. To let computer play first \nSelection: ");
@@ -40,7 +34,7 @@ public class Reversi {
         }while(!(option.equals("1") || option.equals("2")));
 
 
-
+        //board.print();
 
         int terminate = 0;
 
@@ -53,38 +47,35 @@ public class Reversi {
             if(currentPlayer.canMove(board)) {
                 terminate = 0;
 
-                /*if (board.getLastPlayer() == human.getColor()) {
-                    board = currentPlayer.play(board);
-                    currentPlayer = human;
-                } else {
-                    currentPlayer.play(board);
-                    currentPlayer = machine;
-                }*/
+                //??????????
+                System.out.println("PLAYS: "+currentPlayer.getColor());
                 board = currentPlayer.play(board);
 
-                board.print();
-                System.out.println("--------------------------");
-
-                System.out.println();
+                //board.print();
+                System.out.println("--------------------------\n");
 
                 //Testing
-                break;
+                //break;
 
-            }else{
-                terminate++;
             }
+            else {
+                board.reset();
+                terminate++;
 
-            currentPlayer = switchPlayer(currentPlayer, players);
-            System.out.println("Switched");
+                //????????
+                System.out.println("Player: "+currentPlayer.getColor()+" could not move");
+            }
+            
+            switchPlayer();
+            //System.out.println("Switched");
         }
-
+        System.out.println("GAME OVER");
     }
 
-    private static Player switchPlayer(Player currentPlayer, Player[] players){
-        if(currentPlayer==players[0]){
-            return players[1];
-        }else{
-            return players[0];
-        }
+    private static void switchPlayer() {
+        if (currentPlayer == human)
+            currentPlayer = machine;
+        else
+            currentPlayer = human;
     }
 }
