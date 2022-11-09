@@ -18,12 +18,12 @@ public class Machine extends Player{
         if(color == Board.BLACK)
         {
             //If machine plays as black it wants to maximize the heuristics value
-            max(board, 0);
+            max(board, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
         else
         {
             //If machine plays as white it wants to minimize the heuristics value
-            min(board, 0);
+            min(board, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
 
         //############# Test ###############
@@ -52,7 +52,7 @@ public class Machine extends Player{
         return new Board(keptChild);
     }
 
-    int max(Board board, int depth){
+    int max(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
@@ -68,17 +68,23 @@ public class Machine extends Player{
         }
         int maxValue = Integer.MIN_VALUE;
         for(Board child: board.getChildren()){
-            int childValue = min(child, depth+1);
+            int childValue = min(child, depth+1, a, b);
             if(childValue > maxValue){
                 maxValue = childValue;
             }
 
+            //Pruning
+            if(maxValue >= b) {
+                board.setBestExpectedValue(maxValue+1);
+                return maxValue;
+            }
+            a = Math.max(a, maxValue);
         }
         board.setBestExpectedValue(maxValue);
         return maxValue;
     }
 
-    int min(Board board, int depth){
+    int min(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
@@ -93,11 +99,17 @@ public class Machine extends Player{
         }
         int minValue = Integer.MAX_VALUE;
         for(Board child: board.getChildren()){
-            int childValue = max(child, depth+1);
+            int childValue = max(child, depth+1, a, b);
             if(childValue < minValue){
                 minValue = childValue;
             }
 
+            //Pruning
+            if(minValue <= a) {
+                board.setBestExpectedValue(minValue - 1);
+                return minValue;
+            }
+            b = Math.min(b, minValue);
         }
         board.setBestExpectedValue(minValue);
         return minValue;

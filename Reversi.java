@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Reversi {
 
     private static final Player human = new Human();
-    private static final Player machine = new Machine(5);
+    private static final Player machine = new Machine(6);
     private static Player currentPlayer;
 
 
