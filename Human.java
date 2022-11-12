@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -48,6 +50,7 @@ public class Human extends Player{
 
     @Override
     public void printBoard(Board board){
-        System.out.println(board.boardToString(availMoves.keySet()));
+        PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
+        printWriter.println(board.boardToString(availMoves.keySet()));
     }
 }

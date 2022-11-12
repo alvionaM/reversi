@@ -101,11 +101,11 @@ public class Reversi {
 
 
         if(winner == Board.BLACK) {
-            System.out.println((64 - score) + " - " + score);
+            System.out.println((64 - score) + " - " + score + "\n");
         }else if (winner == Board.WHITE)
-            System.out.println( score+" - "+(64-score) );
+            System.out.println( score+" - "+(64-score) + "\n");
         else
-            System.out.println( score +" - "+score );
+            System.out.println( score +" - "+score + "\n");
 
     }
 

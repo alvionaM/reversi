@@ -274,7 +274,7 @@ public class Board {
     }*/
 
     public String boardToString(Set<Move> availMoves){
-        StringBuilder str = new StringBuilder("\t\t+    1   2   3   4    5   6   7    8\n");
+        StringBuilder str = new StringBuilder("\t\t  1   2   3   4   5   6   7   8\n");
 
         String c;
 
@@ -286,7 +286,7 @@ public class Board {
                     c = gameBoard[i][j] == 1 ? "\u26ab" : "\u26aa";
                 else{
                     if (availMoves != null && availMoves.contains(new Move(i,j)))
-                        c = "X";
+                        c = "\u26bd";    // user available moves
                     else
                         c = "\u2b55";
                 }

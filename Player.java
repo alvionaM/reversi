@@ -1,4 +1,5 @@
 public abstract class Player {
+
     private int color;
     private String name;
 

@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,8 +11,10 @@ public class Machine extends Player{
         this.maxDepth = maxDepth;
     }
 
+    @Override
     public void printBoard(Board board){
-        System.out.println(board.boardToString(null));
+        PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
+        printWriter.println(board.boardToString(null));
     }
 
     @Override
