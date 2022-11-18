@@ -249,7 +249,7 @@ public class Board {
             }
         }
 
-        return 3*cornerEval + 2*sideEval + allEval;
+        return 50*cornerEval + 20*sideEval + allEval;
     }
 
     public void reset() {
@@ -260,18 +260,6 @@ public class Board {
 
         setLastPlayer(-1*lastPlayer);
     }
-
-    /*public void print() {
-        System.out.println("\t1\t2\t3\t4\t5\t6\t7\t8");
-        for (int i = 0; i < ROWS; i++) {
-            System.out.print((i+1)+" ");
-            for (int j = 0; j < COLS; j++) {
-                String c = gameBoard[i][j]!=0 ? (gameBoard[i][j]==1 ? "\u26ab": "\u26aa") : " \u26d2";
-                System.out.print(c+"  ");
-            }
-            System.out.println();
-        }
-    }*/
 
     public String boardToString(Set<Move> availMoves){
         StringBuilder str = new StringBuilder("\t\t  1   2   3   4   5   6   7   8\n");
@@ -320,10 +308,6 @@ public class Board {
 
     public void setLastPlayer(int lastPlayer){
         this.lastPlayer = lastPlayer;
-    }
-
-    public int getLastPlayer() {
-        return lastPlayer;
     }
 
     public void setBestExpectedValue(int value) {

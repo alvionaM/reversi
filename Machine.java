@@ -11,6 +11,8 @@ public class Machine extends Player{
         this.maxDepth = maxDepth;
     }
 
+    Machine() {}
+
     @Override
     public void printBoard(Board board){
         PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
@@ -22,7 +24,7 @@ public class Machine extends Player{
         return MiniMax(board);
     }
 
-    Board MiniMax(Board board) {
+    private Board MiniMax(Board board) {
         if(this.getColor() == Board.BLACK)
         {
             //If machine plays as black it wants to maximize the heuristics value
@@ -60,7 +62,7 @@ public class Machine extends Player{
         return new Board(keptChild);
     }
 
-    int max(Board board, int depth, int a, int b){
+    private int max(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
@@ -92,7 +94,7 @@ public class Machine extends Player{
         return maxValue;
     }
 
-    int min(Board board, int depth, int a, int b){
+    private int min(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
             //############# Test ###############
@@ -122,4 +124,6 @@ public class Machine extends Player{
         board.setBestExpectedValue(minValue);
         return minValue;
     }
+
+    public void setMaxDepth(int depth) { maxDepth = depth; }
 }

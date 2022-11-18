@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Reversi {
 
     private static final Player human = new Human();
-    private static final Player machine = new Machine(2);
+    private static final Player machine = new Machine();
     private static Player currentPlayer;
 
 
@@ -12,6 +12,7 @@ public class Reversi {
         Board board = new Board();
 
         Scanner input = new Scanner(System.in);
+        int difficulty;
         String option;
 
         System.out.println("\n\t\tREVERSI\n");
@@ -23,6 +24,13 @@ public class Reversi {
         machine.setName("WALL-E");
 
         System.out.println("\n\tWelcome, "+human+"!");
+
+        do {
+            System.out.print("\n\tChose difficulty (2-8): ");
+            difficulty = input.next().charAt(0) - '0';
+        } while (difficulty < 2 || difficulty > 8);
+
+        ((Machine)machine).setMaxDepth(difficulty);
 
         do {
             System.out.print("\n\tChoose \n\t\t1. You play first \n\t\t2. "+machine+" plays first \n\tSelection: ");
