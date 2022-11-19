@@ -78,7 +78,11 @@ public class Machine extends Player{
         }
         int maxValue = Integer.MIN_VALUE;
         for(Board child: board.getChildren()){
-            int childValue = min(child, depth+1, a, b);
+            // Set depth
+            int newDepth = (board.lastMove.equals(child.lastMove) ? depth : depth+1 );
+            // depth+1 normally, depth if turn is lost
+
+            int childValue = min(child, newDepth, a, b);
             if(childValue > maxValue){
                 maxValue = childValue;
             }
@@ -109,7 +113,11 @@ public class Machine extends Player{
         }
         int minValue = Integer.MAX_VALUE;
         for(Board child: board.getChildren()){
-            int childValue = max(child, depth+1, a, b);
+            // Set depth
+            int newDepth = (board.lastMove.equals(child.lastMove) ? depth : depth+1 );
+            // depth+1 normally, depth if turn is lost
+
+            int childValue = max(child, newDepth, a, b);
             if(childValue < minValue){
                 minValue = childValue;
             }

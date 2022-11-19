@@ -79,7 +79,7 @@ public class Reversi {
                 System.out.println("--------------------------\n");
 
                 //Testing
-                //break;
+                //currentPlayer.printBoard(board);
 
             }
             else {

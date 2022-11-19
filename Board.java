@@ -71,7 +71,22 @@ public class Board {
     public boolean isTerminal() {
         produceChildren();
 
-        return children.isEmpty();
+        if (children.isEmpty()) {
+            Board copyBoard = new Board(this);
+            copyBoard.setLastPlayer(-1 * copyBoard.lastPlayer);
+            copyBoard.produceChildren();
+
+            if (copyBoard.children.isEmpty())
+                return true;
+            else {
+                children.add(copyBoard);
+                return false;
+            }
+        }
+        else
+            return false;
+
+        //return children.isEmpty();
     }
     
 
