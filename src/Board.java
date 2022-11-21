@@ -5,7 +5,7 @@ public class Board {
 
     public static final int BLACK = 1;
     public static final int WHITE = -1;
-    private static final int EMPTY = 0;
+    public static final int EMPTY = 0;
 
     private static final int ROWS = 8;
     private static final int COLS = ROWS;
@@ -285,8 +285,8 @@ public class Board {
             str.append("\t\t").append(i + 1).append(" ");
 
             for (int j = 0; j < COLS; j++) {
-                if(gameBoard[i][j]!=0)
-                    c = gameBoard[i][j] == 1 ? "\u26ab" : "\u26aa";
+                if(gameBoard[i][j] != EMPTY)
+                    c = gameBoard[i][j] == BLACK ? "\u26ab" : "\u26aa";
                 else{
                     if (availMoves != null && availMoves.contains(new Move(i,j)))
                         c = "\u26bd";    // user available moves

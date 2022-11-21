@@ -4,6 +4,8 @@ public class Reversi {
 
     private static final Player human = new Human();
     private static final Player machine = new Machine();
+    //private static final Player machineNr2 = new Machine(); //serves for AI-vs-AI games, testing purposes
+
     private static Player currentPlayer;
 
 
@@ -15,7 +17,9 @@ public class Reversi {
         int difficulty;
         String option;
 
-        System.out.println("\n\t\tREVERSI\n");
+        //"REVERSI"
+        printReversiBanner();
+
         System.out.println("\tWhat's your name? ");
         System.out.print("\t\t > ");
         String name = input.next();
@@ -23,10 +27,10 @@ public class Reversi {
         human.setName(name);
         machine.setName("WALL-E");
 
-        System.out.println("\n\tWelcome, "+human+"!");
+        System.out.println("\n\tWelcome, "+human.getName()+"!");
 
         do {
-            System.out.print("\n\tChose difficulty (2-8): ");
+            System.out.print("\n\tChoose difficulty (2-8): ");
             difficulty = input.next().charAt(0) - '0';
         } while (difficulty < 2 || difficulty > 8);
 
@@ -58,9 +62,12 @@ public class Reversi {
             option = input.next();
         }while(!option.equals("y"));
 
-        System.out.println();
+        //"START"
+        printStartBanner();
 
 
+
+        //Starts actual game
         int terminate = 0;
 
         while(terminate < 2){
@@ -76,7 +83,7 @@ public class Reversi {
                 board = currentPlayer.play(board);
 
 
-                System.out.println("--------------------------\n");
+                System.out.println("\t-------------------------------------------------\n");
 
                 //Testing
                 //currentPlayer.printBoard(board);
@@ -93,6 +100,7 @@ public class Reversi {
         }
 
         //Winning board
+        System.out.println("---Winning Board---");
         machine.printBoard(board);
 
         System.out.println("\n\tGAME OVER!");
@@ -122,5 +130,29 @@ public class Reversi {
             currentPlayer = machine;
         else
             currentPlayer = human;
+    }
+
+    private static void printReversiBanner() {
+        System.out.println("\n\n" +
+                " ______    _______  __   __  _______  ______    _______  ___  \n" +
+                "|    _ |  |       ||  | |  ||       ||    _ |  |       ||   | \n" +
+                "|   | ||  |    ___||  |_|  ||    ___||   | ||  |  _____||   | \n" +
+                "|   |_||_ |   |___ |       ||   |___ |   |_||_ | |_____ |   | \n" +
+                "|    __  ||    ___||       ||    ___||    __  ||_____  ||   | \n" +
+                "|   |  | ||   |___  |     | |   |___ |   |  | | _____| ||   | \n" +
+                "|___|  |_||_______|  |___|  |_______||___|  |_||_______||___| \n\n");
+    }
+
+    private static void printStartBanner(){
+        System.out.println("\n\n" +
+                "\t       __                    __      \n" +
+                "\t      /\\ \\__                /\\ \\__   \n" +
+                "\t  ____\\ \\ ,_\\    __     _ __\\ \\ ,_\\  \n" +
+                "\t /',__\\\\ \\ \\/  /'__`\\  /\\`'__\\ \\ \\/  \n" +
+                "\t/\\__, `\\\\ \\ \\_/\\ \\L\\.\\_\\ \\ \\/ \\ \\ \\_ \n" +
+                "\t\\/\\____/ \\ \\__\\ \\__/.\\_\\\\ \\_\\  \\ \\__\\\n" +
+                "\t \\/___/   \\/__/\\/__/\\/_/ \\/_/   \\/__/\n" +
+                "\t                                     \n" +
+                "\t                                      \n");
     }
 }

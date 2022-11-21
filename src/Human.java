@@ -5,8 +5,11 @@ import java.util.Scanner;
 
 public class Human extends Player{
 
-    Scanner input = new Scanner(System.in);
+    private final Scanner input = new Scanner(System.in);
+    private final PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
+
     HashMap<Move, Board> availMoves = new HashMap<>();
+
 
     @Override
     public void produceMoves(Board board){
@@ -50,7 +53,6 @@ public class Human extends Player{
 
     @Override
     public void printBoard(Board board){
-        PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
         printWriter.println(board.boardToString(availMoves.keySet()));
     }
 }

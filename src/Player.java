@@ -26,6 +26,10 @@ public abstract class Player {
         return color;
     }
 
+    public String getName(){
+        return name;
+    }
+
     public void setColor(int color){
         this.color = color;
     }
@@ -35,6 +39,7 @@ public abstract class Player {
     }
 
     public String toString(){
-        return name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
+        String disk = color == Board.BLACK ? "\u26ab  " : "\u26aa  ";
+        return disk + name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
     }
 }

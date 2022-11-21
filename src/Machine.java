@@ -5,7 +5,10 @@ import java.util.Random;
 
 public class Machine extends Player{
 
+    private final PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
+
     private int maxDepth;
+
 
     Machine(int maxDepth){
         this.maxDepth = maxDepth;
@@ -15,13 +18,14 @@ public class Machine extends Player{
 
     @Override
     public void printBoard(Board board){
-        PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
         printWriter.println(board.boardToString(null));
     }
 
     @Override
     public Board play(Board board){
-        return MiniMax(board);
+        Board newBoard = MiniMax(board);
+        printWriter.println("\t\tGonna play at... "+newBoard.lastMove);
+        return newBoard;
     }
 
     private Board MiniMax(Board board) {
@@ -37,10 +41,10 @@ public class Machine extends Player{
         }
 
         //############# Test ###############
-        for(Board child: board.getChildren()){
-            System.out.println(child.getBestExpectedValue());
-            System.out.println();
-        }//##################################
+//        for(Board child: board.getChildren()){
+//            System.out.println(child.getBestExpectedValue());
+//            System.out.println();
+//        }//##################################
 
         Random r = new Random();
         Board keptChild = new Board();
