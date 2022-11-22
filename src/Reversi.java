@@ -4,12 +4,18 @@ public class Reversi {
 
     private static final Player human = new Human();
     private static final Player machine = new Machine();
-    //private static final Player machineNr2 = new Machine(); //serves for AI-vs-AI games, testing purposes
+    private static final Player machine_2 = new Machine(); //serves for AI-vs-AI games, testing purposes
 
     private static Player currentPlayer;
 
+    private static boolean testAI = false;
 
     public static void main(String[] args){
+        try {
+            if (args[0].equals("-testai")) {
+                testAI = true;
+            }
+        } catch (Exception ignored) {}
 
         Board board = new Board();
 
@@ -20,40 +26,61 @@ public class Reversi {
         //"REVERSI"
         printReversiBanner();
 
-        System.out.println("\tWhat's your name? ");
-        System.out.print("\t\t > ");
-        String name = input.next();
+        if (!testAI) {
+            System.out.println("\tWhat's your name? ");
+            System.out.print("\t\t > ");
+            String name = input.next();
 
-        human.setName(name);
+            human.setName(name);
+            System.out.println("\n\tWelcome, "+human.getName()+"!");
+        }
+        else {
+            System.out.println("\tAI vs AI testing mode...\n");
+            machine_2.setName("R2-D2");
+        }
         machine.setName("WALL-E");
 
-        System.out.println("\n\tWelcome, "+human.getName()+"!");
 
+        // CHOOSE DIFFICULTY OPTION
         do {
-            System.out.print("\n\tChoose difficulty (2-8): ");
-            difficulty = input.next().charAt(0) - '0';
-        } while (difficulty < 2 || difficulty > 8);
+            System.out.print("\n\tChoose difficulty (>1): ");
+            //difficulty = input.next().charAt(0) - '0';
+            difficulty = 0;
+            if (input.hasNextInt())
+                difficulty = input.nextInt();
+            else {
+                input.next();
+            }
+        } while (difficulty < 2);
 
         ((Machine)machine).setMaxDepth(difficulty);
+        if (testAI) { ((Machine)machine_2).setMaxDepth(difficulty); }
 
-        do {
-            System.out.print("\n\tChoose \n\t\t1. You play first \n\t\t2. "+machine+" plays first \n\tSelection: ");
-            option = input.next();
+        // CHOOSE WHO PLAYS FIRST
+        if (!testAI) {
+            do {
+                System.out.print("\n\tChoose \n\t\t1. You play first \n\t\t2. " + machine.getName() + " plays first \n\tSelection: ");
+                option = input.next();
 
-            if (option.equals("1")) {
-                human.setColor(Board.BLACK);       //Black plays first, so human gets Black
-                machine.setColor(Board.WHITE);     //Machine gets white
-                currentPlayer = human;
-            } else {
-                machine.setColor(Board.BLACK);     //Black plays first, so machine gets Black
-                human.setColor(Board.WHITE);       //Human gets white
-                currentPlayer = machine;
-            }
+                if (option.equals("1")) {
+                    human.setColor(Board.BLACK);       //Black plays first, so human gets Black
+                    machine.setColor(Board.WHITE);     //Machine gets white
+                    currentPlayer = human;
+                } else {
+                    machine.setColor(Board.BLACK);     //Black plays first, so machine gets Black
+                    human.setColor(Board.WHITE);       //Human gets white
+                    currentPlayer = machine;
+                }
 
-            board.setLastPlayer(Board.WHITE);       //Black plays first
+            } while (!(option.equals("1") || option.equals("2")));
+        }
+        else {
+            machine.setColor(Board.BLACK);
+            machine_2.setColor(Board.WHITE);
+            currentPlayer = machine;
+        }
 
-        }while(!(option.equals("1") || option.equals("2")));
-
+        board.setLastPlayer(Board.WHITE);       //Black plays first
 
         System.out.println("\n");
         machine.printBoard(board);
@@ -99,23 +126,25 @@ public class Reversi {
             switchPlayer();
         }
 
-        //Winning board
-        System.out.println("---Winning Board---");
+        // Winning board
+        System.out.println("\n\tWinning Board!");
         machine.printBoard(board);
 
+        // Calc score and winner
         System.out.println("\n\tGAME OVER!");
         int score = board.calcScore();
         int winner = board.getWinner();
 
-
-        if(winner == human.getColor())
-            System.out.print("\t\t"+human+" wins! :\t");
+        // Print winner
+        Player foe = (testAI) ? machine_2 : human;
+        if(winner == foe.getColor())
+            System.out.print("\t\t"+foe+" wins! :\t");
         else if(winner == machine.getColor())
             System.out.print("\t\t"+machine+" wins! :\t");
         else
             System.out.print("It's a tie! :\t");
 
-
+        // Print score
         if(winner == Board.BLACK) {
             System.out.println((64 - score) + " - " + score + "\n");
         }else if (winner == Board.WHITE)
@@ -126,33 +155,42 @@ public class Reversi {
     }
 
     private static void switchPlayer() {
-        if (currentPlayer == human)
-            currentPlayer = machine;
-        else
-            currentPlayer = human;
+        if (testAI) {
+            currentPlayer = (currentPlayer == machine) ? machine_2 : machine;
+        }
+        else {
+            currentPlayer = (currentPlayer == machine) ? human : machine;
+        }
     }
 
     private static void printReversiBanner() {
-        System.out.println("\n\n" +
-                " ______    _______  __   __  _______  ______    _______  ___  \n" +
-                "|    _ |  |       ||  | |  ||       ||    _ |  |       ||   | \n" +
-                "|   | ||  |    ___||  |_|  ||    ___||   | ||  |  _____||   | \n" +
-                "|   |_||_ |   |___ |       ||   |___ |   |_||_ | |_____ |   | \n" +
-                "|    __  ||    ___||       ||    ___||    __  ||_____  ||   | \n" +
-                "|   |  | ||   |___  |     | |   |___ |   |  | | _____| ||   | \n" +
-                "|___|  |_||_______|  |___|  |_______||___|  |_||_______||___| \n\n");
+        System.out.println("""
+
+
+                 ______    _______  __   __  _______  ______    _______  ___ \s
+                |    _ |  |       ||  | |  ||       ||    _ |  |       ||   |\s
+                |   | ||  |    ___||  |_|  ||    ___||   | ||  |  _____||   |\s
+                |   |_||_ |   |___ |       ||   |___ |   |_||_ | |_____ |   |\s
+                |    __  ||    ___||       ||    ___||    __  ||_____  ||   |\s
+                |   |  | ||   |___  |     | |   |___ |   |  | | _____| ||   |\s
+                |___|  |_||_______|  |___|  |_______||___|  |_||_______||___|\s
+
+                """);
     }
 
     private static void printStartBanner(){
-        System.out.println("\n\n" +
-                "\t       __                    __      \n" +
-                "\t      /\\ \\__                /\\ \\__   \n" +
-                "\t  ____\\ \\ ,_\\    __     _ __\\ \\ ,_\\  \n" +
-                "\t /',__\\\\ \\ \\/  /'__`\\  /\\`'__\\ \\ \\/  \n" +
-                "\t/\\__, `\\\\ \\ \\_/\\ \\L\\.\\_\\ \\ \\/ \\ \\ \\_ \n" +
-                "\t\\/\\____/ \\ \\__\\ \\__/.\\_\\\\ \\_\\  \\ \\__\\\n" +
-                "\t \\/___/   \\/__/\\/__/\\/_/ \\/_/   \\/__/\n" +
-                "\t                                     \n" +
-                "\t                                      \n");
+        System.out.println("""
+
+
+                \t       __                    __     \s
+                \t      /\\ \\__                /\\ \\__  \s
+                \t  ____\\ \\ ,_\\    __     _ __\\ \\ ,_\\ \s
+                \t /',__\\\\ \\ \\/  /'__`\\  /\\`'__\\ \\ \\/ \s
+                \t/\\__, `\\\\ \\ \\_/\\ \\L\\.\\_\\ \\ \\/ \\ \\ \\_\s
+                \t\\/\\____/ \\ \\__\\ \\__/.\\_\\\\ \\_\\  \\ \\__\\
+                \t \\/___/   \\/__/\\/__/\\/_/ \\/_/   \\/__/
+                \t                                    \s
+                \t                                     \s
+                """);
     }
 }
