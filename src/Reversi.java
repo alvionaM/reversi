@@ -13,7 +13,7 @@ public class Reversi {
     private static boolean testAI = false;
 
     public static void main(String[] args){
-        //testAI = true;
+        testAI = true;
          
         try {
             if (args[0].equals("-testai")) {

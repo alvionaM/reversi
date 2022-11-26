@@ -5,7 +5,12 @@ public class Board {
 
     public static final int BLACK = 1;
     public static final int WHITE = -1;
-    private static final int EMPTY = 0;
+    public static final int EMPTY = 0;
+
+    public static final String BLACKDISK = "\u26ab";
+    public static final String WHITEDISK = "\u26aa";
+    private static final String EMPTYDISK = "\u2b55";
+    private static final String BALLDISK = "\u26bd";
 
     private static final int ROWS = 8;
     private static final int COLS = ROWS;
@@ -40,12 +45,18 @@ public class Board {
         lastPlayer = fatherBoard.lastPlayer;
         lastMove = new Move(fatherBoard.lastMove.getRow(), fatherBoard.lastMove.getCol());
         gameBoard = new int[ROWS][COLS];
-        for (int i = 0; i < ROWS; i++) {
-            System.arraycopy(fatherBoard.gameBoard[i], 0, gameBoard[i], 0, COLS);
-        }
+        copyBoard(fatherBoard.gameBoard, gameBoard);
     }
 
-    private boolean check(int i, int j, int COLOR) {
+    Board(Board fatherBoard, int[][] childGameBoard){
+        lastPlayer = fatherBoard.lastPlayer;
+        lastMove = new Move(fatherBoard.lastMove.getRow(), fatherBoard.lastMove.getCol());
+        gameBoard = childGameBoard;
+    }
+
+    //Checks if any square around (i,j) has the specified color (opposite to (i,j))
+    //If yes, (i,j) is a possible move. Otherwise, it's not possible.
+    private boolean checkIfPossible(int i, int j, int COLOR) {
         
         if (i-1 >= 0) {
             if (j-1 >= 0) {
@@ -72,7 +83,7 @@ public class Board {
                 return true;
         }
         if ((j-1 >= 0 && gameBoard[i][j-1]==COLOR)|| (j+1 <=7 && gameBoard[i][j+1]==COLOR)) return true;
-        
+
         return false;
     }
 
@@ -83,7 +94,7 @@ public class Board {
 
             for (int i = 0; i < ROWS; i++) {
                 for (int j = 0; j < COLS; j++) {
-                    if(gameBoard[i][j]==EMPTY && check(i, j, lastPlayer)) {
+                    if(gameBoard[i][j]==EMPTY && checkIfPossible(i, j, lastPlayer)) {
                         Board child = ifValidMakeMove(i, j, -1 * lastPlayer); //the next player
                         if (child != null) {
                             child.setLastPlayer(-1 * lastPlayer);
@@ -117,14 +128,17 @@ public class Board {
 
         //return children.isEmpty();
     }
-    
 
     private Board ifValidMakeMove(int row, int col, int COLOR) {
 
-        Board child = new Board(this);
         boolean childBirth = false;
 
-        Board temp = new Board(child);
+
+        int[][] temp = new int[8][8];
+        int[][] childGameBoard = new int[8][8];
+        copyBoard(gameBoard, childGameBoard);
+        copyBoard(childGameBoard, temp);
+
 
         // vertical-top
         for (int i = row - 1; i >= 0; i--) {
@@ -135,15 +149,15 @@ public class Board {
                 if (i == row - 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[i][col] = COLOR;
+            temp[i][col] = COLOR;
         }
-    
-        temp.copyBoard(child);
+
+        copyBoard(childGameBoard, temp);
 
         // vertical-bottom
         for (int i = row + 1; i < ROWS; i++) {
@@ -154,15 +168,15 @@ public class Board {
                 if (i == row + 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[i][col] = COLOR;
+            temp[i][col] = COLOR;
         }
- 
-        temp.copyBoard(child);
+
+        copyBoard(childGameBoard, temp);
  
         // horizontal-left
         for (int j = col - 1; j >= 0; j--) {
@@ -173,15 +187,15 @@ public class Board {
                 if (j == col - 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row][j] = COLOR;
+            temp[row][j] = COLOR;
         }
 
-        temp.copyBoard(child);
+        copyBoard(childGameBoard, temp);
 
         // horizontal-right
         for (int j = col + 1; j < COLS; j++) {
@@ -192,15 +206,15 @@ public class Board {
                 if (j == col + 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row][j] = COLOR;
+            temp[row][j] = COLOR;
         }
 
-        temp.copyBoard(child);
+        copyBoard(childGameBoard, temp);
         
         // top-left
         for (int i = 1; i <= Math.min(row, col); i++) {
@@ -211,15 +225,15 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row-i][col-i] = COLOR;
+            temp[row-i][col-i] = COLOR;
         }
 
-        temp.copyBoard(child);
+        copyBoard(childGameBoard, temp);
         
         // bottom-right
         for (int i = 1; i <= Math.min(ROWS-1-row, COLS-1-col); i++) {
@@ -230,15 +244,15 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row+i][col+i] = COLOR;
+            temp[row+i][col+i] = COLOR;
         }
 
-        temp.copyBoard(child);
+        copyBoard(childGameBoard, temp);
         
         // top-right
         for (int i = 1; i <= Math.min(row, COLS-1-col); i++) {
@@ -249,15 +263,15 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row-i][col+i] = COLOR;
+            temp[row-i][col+i] = COLOR;
         }
 
-        temp.copyBoard(child);
+        copyBoard(childGameBoard, temp);
         
         // bottom-left
         for (int i = 1; i <= Math.min(ROWS-1-row, col); i++) {
@@ -268,19 +282,22 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child.copyBoard(temp);
+                    copyBoard(temp, childGameBoard);
                     childBirth = true;
                     break;
                 }
             }
-            temp.gameBoard[row+i][col-i] = COLOR;
+            temp[row+i][col-i] = COLOR;
         }
-        
-        temp = null;
-        if (!childBirth) return null;
-        
-        child.gameBoard[row][col] = COLOR;  //played square changes color
 
+        temp = null;
+        if(!childBirth) {
+            childGameBoard = null;
+            return null;
+        }
+
+        childGameBoard[row][col] = COLOR; //played square changes color
+        Board child = new Board(this, childGameBoard);
         return child;
     }
 
@@ -318,21 +335,21 @@ public class Board {
     public String boardToString(Set<Move> availMoves){
         StringBuilder str = new StringBuilder("\t\t  1   2   3   4   5   6   7   8\n");
 
-        String c;
+        String disk;
 
         for (int i = 0; i < ROWS; i++) {
             str.append("\t\t").append(i + 1).append(" ");
 
             for (int j = 0; j < COLS; j++) {
-                if(gameBoard[i][j]!=0)
-                    c = gameBoard[i][j] == 1 ? "\u26ab" : "\u26aa";
+                if(gameBoard[i][j] != EMPTY)
+                    disk = gameBoard[i][j] == BLACK ? BLACKDISK : WHITEDISK;
                 else{
                     if (availMoves != null && availMoves.contains(new Move(i,j)))
-                        c = "\u26bd";    // user available moves
+                        disk = BALLDISK;    // user available moves
                     else
-                        c = "\u2b55";
+                        disk = EMPTYDISK;
                 }
-                str.append(c).append("  ");
+                str.append(disk).append("  ");
             }
             str.append("\n");
         }
@@ -359,11 +376,6 @@ public class Board {
             return 32;
     }
 
-    private void copyBoard(Board target) {
-        for (int i = 0; i < ROWS; i++)
-            System.arraycopy(target.gameBoard[i], 0, gameBoard[i], 0, COLS);
-
-    }
 
     public void setLastPlayer(int lastPlayer){
         this.lastPlayer = lastPlayer;
@@ -389,6 +401,12 @@ public class Board {
             //children.clear();
             children = null;
         }
+
+    }
+
+    private static void copyBoard(int[][] source, int[][] destination) {
+        for (int i = 0; i < ROWS; i++)
+            System.arraycopy(source[i], 0, destination[i], 0, COLS);
 
     }
 

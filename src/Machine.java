@@ -30,6 +30,7 @@ public class Machine extends Player{
         printWriter.println("\t\tGonna play at... "+newBoard.lastMove);
         
         return newBoard;
+
     }
 
     private Board MiniMax(Board board) {
@@ -61,6 +62,7 @@ public class Machine extends Player{
                 break;
             }
         }
+
         board.clear();
         
         return new Board(keptChild);
@@ -96,7 +98,7 @@ public class Machine extends Player{
             if(maxValue >= b) {
                 board.setBestExpectedValue(maxValue);
 
-                if (depth>2) {
+                if (depth>1) {
                     board.clear();
                 }
                 return maxValue;
@@ -106,7 +108,7 @@ public class Machine extends Player{
 
         board.setBestExpectedValue(maxValue);
 
-        if (depth>2) {
+        if (depth>1) {
             board.clear();
         }
         return maxValue;
@@ -141,7 +143,7 @@ public class Machine extends Player{
             if(minValue <= a) {
                 board.setBestExpectedValue(minValue);
 
-                if (depth>2) {
+                if (depth>1) {
                     board.clear();
                 }
                 return minValue;
@@ -151,7 +153,7 @@ public class Machine extends Player{
         
         board.setBestExpectedValue(minValue);
 
-        if (depth>2) {
+        if (depth>1) {
             board.clear();
         }
         return minValue;
