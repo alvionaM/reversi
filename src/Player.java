@@ -22,6 +22,7 @@ public abstract class Player {
 
     public abstract Board play(Board board);
 
+    
     public int getColor(){
         return color;
     }

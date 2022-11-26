@@ -5,7 +5,7 @@ public class Board {
 
     public static final int BLACK = 1;
     public static final int WHITE = -1;
-    public static final int EMPTY = 0;
+    private static final int EMPTY = 0;
 
     private static final int ROWS = 8;
     private static final int COLS = ROWS;
@@ -45,7 +45,36 @@ public class Board {
         }
     }
 
-
+    private boolean check(int i, int j, int COLOR) {
+        
+        if (i-1 >= 0) {
+            if (j-1 >= 0) {
+                if (gameBoard[i-1][j-1]==COLOR)
+                    return true;
+            }
+            if(j+1 <= 7) {
+                if (gameBoard[i-1][j+1]==COLOR)
+                    return true;
+            }
+            if (gameBoard[i-1][j]==COLOR)
+                return true;
+        }
+        if (i+1 <= 7) {
+            if (j-1 >= 0) {
+                if (gameBoard[i+1][j-1]==COLOR)
+                    return true;
+            }
+            if (j+1 <= 7) {
+                if (gameBoard[i+1][j+1]==COLOR)
+                    return true;
+            }
+            if (gameBoard[i+1][j]==COLOR)
+                return true;
+        }
+        if ((j-1 >= 0 && gameBoard[i][j-1]==COLOR)|| (j+1 <=7 && gameBoard[i][j+1]==COLOR)) return true;
+        
+        return false;
+    }
 
 
     public void produceChildren() {
@@ -54,7 +83,7 @@ public class Board {
 
             for (int i = 0; i < ROWS; i++) {
                 for (int j = 0; j < COLS; j++) {
-                    if(gameBoard[i][j]==EMPTY) {
+                    if(gameBoard[i][j]==EMPTY && check(i, j, lastPlayer)) {
                         Board child = ifValidMakeMove(i, j, -1 * lastPlayer); //the next player
                         if (child != null) {
                             child.setLastPlayer(-1 * lastPlayer);
@@ -96,7 +125,8 @@ public class Board {
         boolean childBirth = false;
 
         Board temp = new Board(child);
-        //kathetos-panw
+
+        // vertical-top
         for (int i = row - 1; i >= 0; i--) {
             if (gameBoard[i][col] == EMPTY) {
                 break;
@@ -105,16 +135,17 @@ public class Board {
                 if (i == row - 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
             }
             temp.gameBoard[i][col] = COLOR;
         }
+    
+        temp.copyBoard(child);
 
-        temp = new Board(child);
-        //kathetos-katw
+        // vertical-bottom
         for (int i = row + 1; i < ROWS; i++) {
             if (gameBoard[i][col] == EMPTY) {
                 break;
@@ -123,16 +154,17 @@ public class Board {
                 if (i == row + 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
             }
             temp.gameBoard[i][col] = COLOR;
         }
-
-        temp = new Board(child);
-        //orizontia-aristera
+ 
+        temp.copyBoard(child);
+ 
+        // horizontal-left
         for (int j = col - 1; j >= 0; j--) {
             if (gameBoard[row][j] == EMPTY) {
                 break;
@@ -141,7 +173,7 @@ public class Board {
                 if (j == col - 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
@@ -149,8 +181,9 @@ public class Board {
             temp.gameBoard[row][j] = COLOR;
         }
 
-        temp = new Board(child);
-        //orizontia-deksia
+        temp.copyBoard(child);
+
+        // horizontal-right
         for (int j = col + 1; j < COLS; j++) {
             if (gameBoard[row][j] == EMPTY) {
                 break;
@@ -159,7 +192,7 @@ public class Board {
                 if (j == col + 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
@@ -167,8 +200,9 @@ public class Board {
             temp.gameBoard[row][j] = COLOR;
         }
 
-        temp = new Board(child);
-        //panw-aristera
+        temp.copyBoard(child);
+        
+        // top-left
         for (int i = 1; i <= Math.min(row, col); i++) {
             if (gameBoard[row-i][col-i] == EMPTY) {
                 break;
@@ -177,7 +211,7 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
@@ -185,8 +219,9 @@ public class Board {
             temp.gameBoard[row-i][col-i] = COLOR;
         }
 
-        temp = new Board(child);
-        //katw-deksia
+        temp.copyBoard(child);
+        
+        // bottom-right
         for (int i = 1; i <= Math.min(ROWS-1-row, COLS-1-col); i++) {
             if (gameBoard[row+i][col+i] == EMPTY) {
                 break;
@@ -195,7 +230,7 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
@@ -203,8 +238,9 @@ public class Board {
             temp.gameBoard[row+i][col+i] = COLOR;
         }
 
-        temp = new Board(child);
-        //panw-deksia
+        temp.copyBoard(child);
+        
+        // top-right
         for (int i = 1; i <= Math.min(row, COLS-1-col); i++) {
             if (gameBoard[row-i][col+i] == EMPTY) {
                 break;
@@ -213,7 +249,7 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
@@ -221,8 +257,9 @@ public class Board {
             temp.gameBoard[row-i][col+i] = COLOR;
         }
 
-        temp = new Board(child);
-        //katw-aristera
+        temp.copyBoard(child);
+        
+        // bottom-left
         for (int i = 1; i <= Math.min(ROWS-1-row, col); i++) {
             if (gameBoard[row+i][col-i] == EMPTY) {
                 break;
@@ -231,17 +268,19 @@ public class Board {
                 if (i == 1) {
                     break;
                 } else {
-                    child = temp;
+                    child.copyBoard(temp);
                     childBirth = true;
                     break;
                 }
             }
             temp.gameBoard[row+i][col-i] = COLOR;
         }
-
+        
+        temp = null;
         if (!childBirth) return null;
-
+        
         child.gameBoard[row][col] = COLOR;  //played square changes color
+
         return child;
     }
 
@@ -285,8 +324,8 @@ public class Board {
             str.append("\t\t").append(i + 1).append(" ");
 
             for (int j = 0; j < COLS; j++) {
-                if(gameBoard[i][j] != EMPTY)
-                    c = gameBoard[i][j] == BLACK ? "\u26ab" : "\u26aa";
+                if(gameBoard[i][j]!=0)
+                    c = gameBoard[i][j] == 1 ? "\u26ab" : "\u26aa";
                 else{
                     if (availMoves != null && availMoves.contains(new Move(i,j)))
                         c = "\u26bd";    // user available moves
@@ -320,6 +359,11 @@ public class Board {
             return 32;
     }
 
+    private void copyBoard(Board target) {
+        for (int i = 0; i < ROWS; i++)
+            System.arraycopy(target.gameBoard[i], 0, gameBoard[i], 0, COLS);
+
+    }
 
     public void setLastPlayer(int lastPlayer){
         this.lastPlayer = lastPlayer;
@@ -337,6 +381,15 @@ public class Board {
 
     public int getWinner(){
         return winner;
+    }
+
+    public void clear() {
+        if (children != null) {
+    
+            //children.clear();
+            children = null;
+        }
+
     }
 
 }

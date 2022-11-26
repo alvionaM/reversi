@@ -1,3 +1,5 @@
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class Reversi {
@@ -11,15 +13,19 @@ public class Reversi {
     private static boolean testAI = false;
 
     public static void main(String[] args){
+        //testAI = true;
+         
         try {
             if (args[0].equals("-testai")) {
                 testAI = true;
             }
         } catch (Exception ignored) {}
-
+         
         Board board = new Board();
-
+        
         Scanner input = new Scanner(System.in);
+        PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
+        
         int difficulty;
         String option;
 
@@ -89,6 +95,7 @@ public class Reversi {
             option = input.next();
         }while(!option.equals("y"));
 
+
         //"START"
         printStartBanner();
 
@@ -104,25 +111,24 @@ public class Reversi {
             if(currentPlayer.canMove(board)) {
                 terminate = 0;
 
-                System.out.println("\tPLAYS: "+currentPlayer);
+                printWriter.println("\tPLAYS: "+currentPlayer);
                 currentPlayer.printBoard(board);
 
                 board = currentPlayer.play(board);
 
 
-                System.out.println("\t-------------------------------------------------\n");
-
-                //Testing
-                //currentPlayer.printBoard(board);
+                printWriter.println("\t-------------------------------------------------\n");
 
             }
             else {
+                
                 board.reset();
                 terminate++;
 
-                System.out.println("\t"+currentPlayer+" could not move!");
+                printWriter.println("\t"+currentPlayer+" could not move!");
             }
-            
+            System.gc();
+
             switchPlayer();
         }
 
@@ -138,19 +144,19 @@ public class Reversi {
         // Print winner
         Player foe = (testAI) ? machine_2 : human;
         if(winner == foe.getColor())
-            System.out.print("\t\t"+foe+" wins! :\t");
+            printWriter.println("\t\t"+foe+" wins! :\t");
         else if(winner == machine.getColor())
-            System.out.print("\t\t"+machine+" wins! :\t");
+            printWriter.println("\t\t"+machine+" wins! :\t");
         else
-            System.out.print("It's a tie! :\t");
+            printWriter.println("\t\tIt's a tie! :\t");
 
         // Print score
         if(winner == Board.BLACK) {
-            System.out.println((64 - score) + " - " + score + "\n");
+            System.out.println("\t\t\t"+(64 - score) + " - " + score + "\n");
         }else if (winner == Board.WHITE)
-            System.out.println( score+" - "+(64-score) + "\n");
+            System.out.println("\t\t\t"+score+" - "+(64-score) + "\n");
         else
-            System.out.println( score +" - "+score + "\n");
+            System.out.println("\t\t\t"+score +" - "+score + "\n");
 
     }
 

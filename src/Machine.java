@@ -1,14 +1,14 @@
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Collections;
+//import java.util.Random;
 
 public class Machine extends Player{
 
     private final PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
 
     private int maxDepth;
-
 
     Machine(int maxDepth){
         this.maxDepth = maxDepth;
@@ -23,8 +23,12 @@ public class Machine extends Player{
 
     @Override
     public Board play(Board board){
+
+        Collections.shuffle(board.getChildren());
         Board newBoard = MiniMax(board);
+        
         printWriter.println("\t\tGonna play at... "+newBoard.lastMove);
+        
         return newBoard;
     }
 
@@ -41,12 +45,12 @@ public class Machine extends Player{
         }
 
         //############# Test ###############
-//        for(Board child: board.getChildren()){
-//            System.out.println(child.getBestExpectedValue());
-//            System.out.println();
-//        }//##################################
+        //for(Board child: board.getChildren()){
+        //   System.out.println(child.getBestExpectedValue());
+        //   System.out.println();
+        //}//##################################
 
-        Random r = new Random();
+        //Random r = new Random();
         Board keptChild = new Board();
         ArrayList<Board> children = board.getChildren();
         int i;
@@ -57,12 +61,8 @@ public class Machine extends Player{
                 break;
             }
         }
-        for (; i < children.size(); i++) {
-            int val = children.get(i).getBestExpectedValue();
-            if(val == board.getBestExpectedValue() && r.nextInt(2) == 1) {
-                keptChild = children.get(i);
-            }
-        }
+        board.clear();
+        
         return new Board(keptChild);
     }
 
@@ -80,6 +80,7 @@ public class Machine extends Player{
             return evaluation;
 
         }
+        
         int maxValue = Integer.MIN_VALUE;
         for(Board child: board.getChildren()){
             // Set depth
@@ -93,12 +94,21 @@ public class Machine extends Player{
 
             //Pruning
             if(maxValue >= b) {
-                board.setBestExpectedValue(maxValue+1);
+                board.setBestExpectedValue(maxValue);
+
+                if (depth>2) {
+                    board.clear();
+                }
                 return maxValue;
             }
             a = Math.max(a, maxValue);
         }
+
         board.setBestExpectedValue(maxValue);
+
+        if (depth>2) {
+            board.clear();
+        }
         return maxValue;
     }
 
@@ -115,6 +125,7 @@ public class Machine extends Player{
             board.setBestExpectedValue(evaluation);
             return evaluation;
         }
+        
         int minValue = Integer.MAX_VALUE;
         for(Board child: board.getChildren()){
             // Set depth
@@ -128,12 +139,21 @@ public class Machine extends Player{
 
             //Pruning
             if(minValue <= a) {
-                board.setBestExpectedValue(minValue - 1);
+                board.setBestExpectedValue(minValue);
+
+                if (depth>2) {
+                    board.clear();
+                }
                 return minValue;
             }
             b = Math.min(b, minValue);
         }
+        
         board.setBestExpectedValue(minValue);
+
+        if (depth>2) {
+            board.clear();
+        }
         return minValue;
     }
 
