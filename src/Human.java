@@ -8,7 +8,7 @@ public class Human extends Player{
     private final Scanner input = new Scanner(System.in);
     private final PrintWriter printWriter = new PrintWriter(System.out,true, StandardCharsets.UTF_8);
 
-    HashMap<Move, Board> availMoves = new HashMap<>();
+    private final HashMap<Move, Board> availMoves = new HashMap<>();
 
 
     @Override

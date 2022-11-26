@@ -2,7 +2,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-//import java.util.Random;
 
 public class Machine extends Player{
 
@@ -45,13 +44,6 @@ public class Machine extends Player{
             min(board, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
         }
 
-        //############# Test ###############
-        //for(Board child: board.getChildren()){
-        //   System.out.println(child.getBestExpectedValue());
-        //   System.out.println();
-        //}//##################################
-
-        //Random r = new Random();
         Board keptChild = new Board();
         ArrayList<Board> children = board.getChildren();
         int i;
@@ -71,16 +63,9 @@ public class Machine extends Player{
     private int max(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
-            //############# Test ###############
-            //System.out.println("k = "+depth+" From max: "+board.evaluate());
-            //board.print();
-            //System.out.println();
-            //##################################
-
             int evaluation = board.evaluate();
             board.setBestExpectedValue(evaluation);
             return evaluation;
-
         }
         
         int maxValue = Integer.MIN_VALUE;
@@ -117,12 +102,6 @@ public class Machine extends Player{
     private int min(Board board, int depth, int a, int b){
         if(depth == maxDepth || board.isTerminal()) //if reached maxDepth, children won't be produced in isTerminal()
         {
-            //############# Test ###############
-            //System.out.println("k = "+depth+" From min: "+board.evaluate());
-            //board.print();
-            //System.out.println();
-            //##################################
-
             int evaluation = board.evaluate();
             board.setBestExpectedValue(evaluation);
             return evaluation;

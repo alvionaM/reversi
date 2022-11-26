@@ -1,3 +1,13 @@
+/*
+Please read first README.txt file!
+
+AI Project 1 2022-2023
+Alviona Mancho          p3200098
+Christos Patrinopoulos  p3200150
+
+Reversi
+*/
+
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
@@ -13,7 +23,7 @@ public class Reversi {
     private static boolean testAI = false;
 
     public static void main(String[] args){
-        testAI = true;
+        //testAI = true;
          
         try {
             if (args[0].equals("-testai")) {
@@ -49,8 +59,10 @@ public class Reversi {
 
         // CHOOSE DIFFICULTY OPTION
         do {
-            System.out.print("\n\tChoose difficulty (>1): ");
-            //difficulty = input.next().charAt(0) - '0';
+            System.out.print("""
+                    \n\t[Maximum recommended difficulty for low response times is 8]\040
+                    \tChoose difficulty (>1):\s""");
+
             difficulty = 0;
             if (input.hasNextInt())
                 difficulty = input.nextInt();
